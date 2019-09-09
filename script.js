@@ -1,10 +1,13 @@
 const initialspeedX = 7.5;		//Initial Speeds
-const initialspeedY = 5;
+const initialspeedY = 1.5;
+const DimensionX = 1200;		//Dimensions
+const DimensionY = 500;
 
-var ballx = 350;
+
+var ballx = DimensionX/2;
 var ballSpeedx = initialspeedX;
 
-var bally = 250;
+var bally = DimensionY/2;
 var ballSpeedy = initialspeedY;
 
 var fps = 60;		//Frames per sec
@@ -17,7 +20,7 @@ var	scoreContext = scoreUpdate.getContext('2d');
 var pad1x = 0;			//Player
 var pad1y = 250;
 
-var pad2x = 690;		//Computer
+var pad2x = 1190;		//Computer
 var pad2y = 250;
 
 var ballradius = 5;		//Ball Dimensions
@@ -60,12 +63,20 @@ function ballReset(){
 	if(ballSpeedx<0)
 	ballSpeedx = -initialspeedX;
 	else
-	ballSpeedx = initialspeedY;
+	ballSpeedx = initialspeedX;
 	ballSpeedy = 0;
 }
 
-function scoreReset(){
+function finishGame(){
+	if(xScore==7)
+		window.alert("You Win!");
+	else
+		window.alert("Computer Wins!");
+	scoreReset();
+}
 
+function scoreReset(){
+	xScore=yScore=0;
 }
 
 function ComputerMov(){
@@ -78,9 +89,9 @@ function ComputerMov(){
 		}
 		else if(Math.abs(ballSpeedy)!=0){
 			if(pad2y<=bally)
-				pad2y+=1.5;
+				pad2y+=2;
 			else if(pad2y>bally)
-				pad2y-=1.5;
+				pad2y-=2;
 		}
 		else{
 			pad2y=bally;
@@ -91,6 +102,8 @@ function ComputerMov(){
 }
 
 function myfunc(){
+	if(xScore==7 || yScore==7)
+		finishGame();
 
 	ComputerMov();
 
@@ -126,10 +139,14 @@ function myfunc(){
 	canvasContext.fillRect(0,0,canvas.width,canvas.height);
 
 	//Score
-	scoreContext.font = "20px Arial";
-	scoreContext.fillStyle = "red";
-	scoreContext.strokeText("xScore",10,40);
-	//scoreContext.strokeText(yScore,300,330);
+	scoreContext.fillStyle = "gray";
+	scoreContext.fillRect(0,0,scoreUpdate.width,scoreUpdate.height );
+
+
+	scoreContext.fillStyle = "blue";
+	scoreContext.font = "18px Arial";
+	scoreContext.fillText("Player: "+xScore,210,20);
+	scoreContext.fillText("CPU: "+yScore,940,20);
 
 	//Player
 	canvasContext.fillStyle = 'white';
